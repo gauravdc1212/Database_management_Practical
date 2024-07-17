@@ -1,0 +1,68 @@
+CREATE TABLE CLIENT_MASTER( 
+client_no VARCHAR(6) primary KEY CHECK(client_no LIKE 'C%'), 
+name varchar(20) NOT NULL, 
+city VARCHAR(20) CHECK(CITY='Delhi' OR city='Mumbai' OR city='Chennai'), 
+pincode INT, 
+state VARCHAR(20), 
+baldue number(10,2), 
+email VARCHAR(30) UNIQUE 
+);
+drop table client_master
+select * from client_master
+
+CREATE TABLE PRODUCT_MASTER( 
+product_no VARCHAR(6) primary KEY CHECK(product_no LIKE 'P%'), 
+name VARCHAR(20) NOT NULL, 
+unitmeasure VARCHAR(20) NOT NULL, 
+reorderlevel number(8) NOT NULL , 
+qtyonhand number(8) NOT NULL , 
+sellprice number(8,2) NOT NULL CHECK(sellprice>0), 
+costprice number(8,2) NOT NULL CHECK(costprice>0), 
+CHECK(QTYONHAND>REORDERLEVEL) 
+); 
+drop table product_master
+
+CREATE TABLE SALESMAN_MASTER ( 
+salesman_No VARCHAR(6) PRIMARY KEY CONSTRAINT pk_salesman_masterr CHECK (salesman_No 
+LIKE 'S%'), 
+sal_name VARCHAR2(20) NOT NULL, 
+address VARCHAR2(40) NOT NULL, 
+city VARCHAR2(20), 
+state VARCHAR2(20), 
+pincode number(6), 
+sal_Amount number(8,2) NOT NULL CHECK (sal_Amount > 0), 
+tgt_to_get number(8,2) NOT NULL CHECK (tgt_to_get > 0), 
+ytd_Sales number(8,2) NOT NULL CHECK (ytd_Sales > 0), 
+remarks VARCHAR2(30) 
+); 
+desc SALESMAN_MASTER; 
+CREATE TABLE SALES_ORDER ( 
+order_No VARCHAR2(6) PRIMARY KEY CONSTRAINT pk_sales_order CHECK (order_No LIKE 'O%'), 
+order_Date DATE NOT NULL, 
+client_No VARCHAR2(6), 
+dely_add VARCHAR2(25), 
+salesman_No VARCHAR2(6), 
+dely_type CHAR(1) DEFAULT 'F' CHECK (dely_type IN ('P', 'F')), 
+billed_yn CHAR(1) CHECK (billed_yn IN ('Y', 'N')), 
+dely_Date DATE, 
+order_Status VARCHAR2(10) CHECK (order_Status IN ('In Process', 'Fulfilled', 'Canceled')), 
+CONSTRAINT fk_client_no FOREIGN KEY (client_No) REFERENCES CLIENT_MASTER(client_No), 
+CONSTRAINT fk_salesman_no FOREIGN KEY (salesman_No) REFERENCES 
+SALESMAN_MASTER(salesman_No), 
+CHECK (dely_Date >= order_Date) 
+); 
+desc SALES_ORDER; 
+CREATE TABLE SALES_ORDER_DETAILS ( 
+order_No VARCHAR2(6), 
+product_No VARCHAR2(6), 
+qty_Order number(8) CHECK (qty_Order > 0), 
+qty_disp number(8) CHECK (qty_disp >= 0), 
+CONSTRAINT PRIMARY KEY pk_sales_order_details (order_No, product_No), 
+CONSTRAINT fk_order_no FOREIGN KEY (order_No) REFERENCES SALES_ORDER(order_No), 
+CONSTRAINT fk_product_no FOREIGN KEY (product_No) REFERENCES 
+PRODUCT_MASTER(product_No), 
+CHECK (qty_disp <= qty_Order) 
+); 
+desc SALES_ORDER_DETAILS; 
+DROP TABLE CLIENT_MASTER; 
+DROP DATABASE practical_6;
