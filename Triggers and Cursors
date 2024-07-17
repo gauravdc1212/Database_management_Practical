@@ -1,0 +1,129 @@
+--triger never run  triger always fire/self execute with the help of action
+
+create table suppliers(
+supplier_id number,
+supplier_name varchar2(4000),
+supplier_address varchar2(4000)
+)
+
+create table audits(
+table_name varchar2(255),
+transaction_name varchar2(10),
+transation_data date
+)
+
+insert into suppliers(supplier_id, supplier_name, supplier_address) values (2,'ravi', 'ghaziabad')
+
+create or replace trigger customers_audit_trg
+after
+update or delete
+on suppliers
+for each row
+declare
+l_transaction varchar2(10);
+begin
+--determine the transation type
+l_transaction:=CASE
+WHEN UPDATING THEN 'UPDATE'
+WHEN DELETING THEN 'DELETE'
+END;
+
+--insert a row into the audit table 
+INSERT INTO audits (table_name, transaction_name, transation_data)
+values('supplier', l_transaction, sysdate);
+end;
+
+
+
+update suppliers 
+set supplier_name='anuj'
+where supplier_id=1 
+
+
+delete from suppliers where supplier_id=1
+
+
+create or replace trigger customers_audit_trg
+after
+update or insert
+on suppliers
+for each row
+declare
+l_transaction varchar2(10);
+begin
+--determine the transation type
+l_transaction:=CASE
+WHEN UPDATING THEN 'UPDATE'
+WHEN INSERTING THEN 'INSERT'
+END;
+
+--insert a row into the audit table 
+INSERT INTO audits (table_name, transaction_name, transation_data)
+values('supplier', l_transaction, sysdate);
+end;
+
+drop trigger customers_audit_trg
+
+
+
+create or replace trigger customers_audit_trg
+before
+update or insert
+on suppliers
+for each row
+declare
+l_transaction varchar2(10);
+begin
+--determine the transation type
+l_transaction:=CASE
+WHEN UPDATING THEN 'UPDATE'
+WHEN INSERTING THEN 'INSERT'
+END;
+
+--insert a row into the audit table 
+INSERT INTO audits (table_name, transaction_name, transation_data)
+values('supplier', l_transaction, sysdate);
+end;
+
+drop trigger customers_audit_trg
+
+select * from audits
+
+
+
+
+
+create or replace trigger customers_audit_trg
+before
+update or insert
+on suppliers
+for each row
+declare
+l_transaction varchar2(10);
+begin
+--determine the transation type
+l_transaction:=CASE
+WHEN UPDATING THEN 'UPDATE'
+WHEN INSERTING THEN 'INSERT'
+END;
+
+--insert a row into the audit table 
+INSERT INTO audits (table_name, transaction_name, transation_data)
+values('supplier', l_transaction, sysdate);
+end;
+
+
+declare 
+total_rows number(2);
+begin
+update suppliers
+set supplier_id= supplier_id+10;
+if sql%notfound then 
+dbms_output.put_line('no customers selected');
+elsif sql%found then
+total_rows:=sql%rowcount;
+dbms_output.put_line(total_rows||' customer selected');
+end if;
+end;
+
+select * from suppliers
