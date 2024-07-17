@@ -1,0 +1,42 @@
+drop table orders
+
+CREATE TABLE orders (
+    ord_no NUMBER(5) PRIMARY KEY,
+    purch_amt NUMBER(10, 2),
+    ord_date DATE,
+    customer_id NUMBER(4),
+    salesman_id NUMBER(4)
+);
+
+-- Inserting data into the table
+INSERT INTO orders (ord_no, purch_amt, ord_date, customer_id, salesman_id) VALUES (70001, 150.50, TO_DATE('2012-10-05', 'YYYY-MM-DD'), 3005, 5002);
+INSERT INTO orders (ord_no, purch_amt, ord_date, customer_id, salesman_id) VALUES (70009, 270.65, TO_DATE('2012-09-10', 'YYYY-MM-DD'), 3001, 5005);
+INSERT INTO orders (ord_no, purch_amt, ord_date, customer_id, salesman_id) VALUES (70002, 65.26, TO_DATE('2012-10-05', 'YYYY-MM-DD'), 3002, 5001);
+INSERT INTO orders (ord_no, purch_amt, ord_date, customer_id, salesman_id) VALUES (70004, 110.50, TO_DATE('2012-08-17', 'YYYY-MM-DD'), 3009, 5003);
+INSERT INTO orders (ord_no, purch_amt, ord_date, customer_id, salesman_id) VALUES (70007, 948.50, TO_DATE('2012-09-10', 'YYYY-MM-DD'), 3005, 5002);
+INSERT INTO orders (ord_no, purch_amt, ord_date, customer_id, salesman_id) VALUES (70005, 2400.60, TO_DATE('2012-07-27', 'YYYY-MM-DD'), 3007, 5001);
+INSERT INTO orders (ord_no, purch_amt, ord_date, customer_id, salesman_id) VALUES (70008, 5760.00, TO_DATE('2012-09-10', 'YYYY-MM-DD'), 3002, 5001);
+INSERT INTO orders (ord_no, purch_amt, ord_date, customer_id, salesman_id) VALUES (70010, 1983.43, TO_DATE('2012-10-10', 'YYYY-MM-DD'), 3004, 5006);
+INSERT INTO orders (ord_no, purch_amt, ord_date, customer_id, salesman_id) VALUES (70003, 2480.40, TO_DATE('2012-10-10', 'YYYY-MM-DD'), 3009, 5003);
+INSERT INTO orders (ord_no, purch_amt, ord_date, customer_id, salesman_id) VALUES (70012, 250.45, TO_DATE('2012-06-27', 'YYYY-MM-DD'), 3008, 5002);
+INSERT INTO orders (ord_no, purch_amt, ord_date, customer_id, salesman_id) VALUES (70011, 75.29, TO_DATE('2012-08-17', 'YYYY-MM-DD'), 3003, 5007);
+INSERT INTO orders (ord_no, purch_amt, ord_date, customer_id, salesman_id) VALUES (70013, 3045.60, TO_DATE('2012-04-25', 'YYYY-MM-DD'), 3002, 5001);
+
+
+select * from orders
+
+1- select sum(purch_amt) "total purchase amount" from orders
+
+2- select avg(purch_amt) "average purchase amount" from orders
+
+3- select count(distinct salesman_id) "no. of salespeople"  from orders
+
+4- select max(purch_amt) "maximum purchase amount" from orders
+
+5- select min(purch_amt) "minimum purchase amount" from orders
+
+6- select customer_id ,max(purch_amt) from orders group by customer_id
+
+7- select ord_date, max(purch_amt) from orders group by ord_date
+
+8- select salesman_id, max(purch_amt) from orders where ord_date=to_date('2012-08-17', 'yyyy-mm-dd') group by salesman_id 
